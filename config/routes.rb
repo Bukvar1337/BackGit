@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   resources :project_stages
   resources :risks
   resources :risk_probability_levels
+  namespace :risks do
   resources :strategies
+  end
   resources :risk_statuses
   get '/get_departments', to: 'integrations#get_departments'
   get '/get_projects', to: 'integrations#get_projects'

@@ -60,7 +60,7 @@ class IntegrationsController < ApplicationController
   end
 
   def get_projects
-    url = 'https://admin.staging.shr.phoenixit.ru/api/v0/projects'
+    url = 'https://admin.staging.shr.phoenixit.ru/api/v0/projects/dictionary'
 
     resp = Faraday.get(url) do |req|
       req.options.timeout = 20

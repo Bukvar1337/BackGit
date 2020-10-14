@@ -2,13 +2,9 @@ class RisksController < ApplicationController
   before_action :find_risk, only: [:show, :update, :destroy]
 
   def index
-    id = params[:id]
-    if id.nil?
-      @risk = Risk.all
-    else
-      @risk = Risk.where("id = #{params[:id]}")
-    end
-    render json: @risk.as_json
+    @risk_groups = RiskGroup.includes([:risks]).all
+    render json: @risk_groups.as_json(include: {risks: {except: [:created_at, :updated_at]}},
+                                      only: [:name])
   end
 
   def show

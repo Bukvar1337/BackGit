@@ -1,14 +1,10 @@
-class StrategiesController < ApplicationController
+class Risks::StrategiesController < ApplicationController
   before_action :find_strategy, only: [:show, :update, :destroy]
 
   def index
-    id = params[:id]
-    if id.nil?
-      @strategy = Strategy.all
-    else
-      @strategy = Strategy.where("id = #{params[:id]}")
-    end
-    render json: @strategy.as_json
+    @strategy = Strategy.all.order(:position)
+
+    render json: @strategy.as_json(except: [:created_at, :updated_at])
   end
 
   def show

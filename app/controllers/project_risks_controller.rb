@@ -39,27 +39,34 @@ class ProjectRisksController < ApplicationController
   end
 
   def calculator
-    #@project_risk = ProjectRisk.find(params[:id])
-    @term = params[:term]
-    @delay = @project_risk.delay
-    @projects = Project.where(["id LIKE ?", "%#{@project_risk.project_id}%"]).first
-    @avg = @project.avg_team_cost
-    @risk_probability_level = RiskProbabilityLevel.where(["id LIKE ?",
-                                                          "%#{@project_risk.risk_probability_level_id}%"]).first
-    @probability = @risk_probability_level.probability
-    @user = User.where(["id LIKE ?", "%#{@project.user_id}%"]).first
-    @experience_level = ExperienceLevel.where(["id LIKE ?", "%#{@user.experience_level_id}%"]).first
-    @k_term = ProjectTermCoef.where("range_from <= #{@term}").where("range_to >= #{@term}").first.coef
-    @k_competence = @experience_level.coef
-    @k_norm = NormalizationFactor.first.coef
-    @risk_status = RiskStatus.where(["id LIKE ?", "%#{@project_risk.risk_status_id}%"]).first
-    @k_status = @risk_status.coef
+    # Передаваемые параметры
+    term = params[:term]
+    id = params[:id]
+    # Запросы в БД для поиска объектов
+    # Не справочники
+    project_risk = ProjectRisk.find(id)
+    project = Project.find(project_risk.project_id)
+    user = User.find(project.user_id)
+    # Справочники
+    risk_status = RiskStatus.find(project_risk.risk_status_id)
+    risk_probability_level = RiskProbabilityLevel.find(project_risk.risk_probability_level_id)
+    experience_level = ExperienceLevel.find(user.experience_level_id)
+    project_term_coef = ProjectTermCoef.where("range_from <= #{term}").where("range_to >= #{term}").first
+    normalization_factor = NormalizationFactor.first
+    # Вытягиваемые данные
+    delay = project_risk.delay
+    avg = project.avg_team_cost
+    probability = risk_probability_level.probability
+    k_term = project_term_coef.coef
+    k_competence = experience_level.coef
+    k_norm = normalization_factor.coef
+    k_status = risk_status.coef
+    # Расчёты
+    losses = delay*avg
+    probable_losses = (losses*probability/100*k_term*k_competence*k_status)/k_norm
 
-    @losses = @delay*@avg
-    @probable_losses = (@losses*@probability/100*@k_term*@k_competence)/@k_norm*@k_status
-
-    render json: [@probable_losses.as_json, @risk_probability_level.as_json(only: :name),
-                  @risk_status.as_json(only: :name)]
+    render json: [probable_losses.as_json, risk_probability_level.as_json(only: :name),
+                  risk_status.as_json(only: :name)]
   end
 
   private def project_risk_params
