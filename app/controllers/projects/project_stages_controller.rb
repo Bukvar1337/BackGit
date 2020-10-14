@@ -1,4 +1,4 @@
-class ProjectStagesController < ApplicationController
+class Projects::ProjectStagesController < ApplicationController
   before_action :find_project_stage, only: [:show, :update, :destroy]
 
   def index

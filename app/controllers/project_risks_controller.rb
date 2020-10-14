@@ -1,5 +1,5 @@
 class ProjectRisksController < ApplicationController
-  before_action :find_project_risk, only: [:show, :update, :destroy, :something]
+  before_action :find_project_risk, only: [:show, :update, :destroy]
 
   def index
     id = params[:id]

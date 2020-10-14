@@ -3,14 +3,18 @@ Rails.application.routes.draw do
   root 'projects#index', as: 'home'
   resources :users
   resources :projects
-  resources :project_risks
-  resources :project_stages
+  resources :risk_statuses
   resources :risks
   resources :risk_probability_levels
+  resources :project_risks
+
+  namespace :projects do
+    resources :project_stages
+  end
   namespace :risks do
   resources :strategies
   end
-  resources :risk_statuses
+
   get '/get_departments', to: 'integrations#get_departments'
   get '/get_projects', to: 'integrations#get_projects'
   get '/get_users', to: 'integrations#get_users'
