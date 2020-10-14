@@ -2,15 +2,10 @@ class ProjectsController < ApplicationController
   before_action :find_project, only: [:show, :update, :destroy]
 
   def index
-    id = params[:id]
-    if id.nil?
-      @project = Project.all
-    else
-      @project = Project.where("id = #{id}").first
-    end
+    @project = Project.all.order(:name)
     @p1 = Project.find(1)
     @p2 = Project.find(2)
-    render json: [@p1.as_json(only: :name),@p2.as_json(only: :name)]
+    render json: {"asd": @project.as_json(except: [:created_at, :updated_at])}
   end
 
   def show

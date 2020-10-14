@@ -2,13 +2,9 @@ class RiskProbabilityLevelsController < ApplicationController
     before_action :find_risk_probability_level, only: [:show, :update, :destroy]
 
     def index
-      id = params[:id]
-      if id.nil?
-        @risk_probability_level = RiskProbabilityLevel.all
-      else
-        @risk_probability_level = RiskProbabilityLevel.where("id = #{params[:id]}")
-      end
-      render json: @risk_probability_level.as_json
+      @risk_probability_level = RiskProbabilityLevel.all.order(:probability)
+
+      render json: @risk_probability_level.as_json(except: [:created_at, :updated_at])
     end
 
     def show
