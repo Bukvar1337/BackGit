@@ -1,0 +1,2 @@
+class ProjectTermCoef < ApplicationRecord
+end

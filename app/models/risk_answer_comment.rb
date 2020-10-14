@@ -1,0 +1,2 @@
+class RiskAnswerComment < ApplicationRecord
+end

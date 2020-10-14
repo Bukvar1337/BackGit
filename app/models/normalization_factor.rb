@@ -1,0 +1,2 @@
+class NormalizationFactor < ApplicationRecord
+end

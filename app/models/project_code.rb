@@ -1,0 +1,2 @@
+class ProjectCode < ApplicationRecord
+end

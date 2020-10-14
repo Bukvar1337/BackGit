@@ -1,0 +1,2 @@
+class RiskQuestion < ApplicationRecord
+end

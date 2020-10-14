@@ -1,0 +1,2 @@
+class ProjectRisk < ApplicationRecord
+end

@@ -1,0 +1,2 @@
+class RiskProbabilityLevel < ApplicationRecord
+end
