@@ -2,13 +2,9 @@ class ProjectStagesController < ApplicationController
   before_action :find_project_stage, only: [:show, :update, :destroy]
 
   def index
-    id = params[:id]
-    if id.nil?
-      @project_stage = ProjectStage.all
-    else
-      @project_stage = ProjectStage.where("id = #{params[:id]}")
-    end
-    render json: @project_stage.as_json
+    @project_stages = ProjectStage.all.order(:probability)
+
+    render json: @project_stages.as_json(except: [:created_at, :updated_at])
   end
 
   def show
