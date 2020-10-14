@@ -49,7 +49,7 @@ class ProjectRisksController < ApplicationController
     @probability = @risk_probability_level.probability
     @user = User.where(["id LIKE ?", "%#{@project.user_id}%"]).first
     @experience_level = ExperienceLevel.where(["id LIKE ?", "%#{@user.experience_level_id}%"]).first
-    @k_term = ProjectTermCoef.where("range_from <= #{@term}").where("range_to => #{@term}")
+    @k_term = ProjectTermCoef.where("range_from <= #{@term}").where("range_to >= #{@term}").first.coef
     @k_competence = @experience_level.coef
     @k_norm = NormalizationFactor.first.coef
     @risk_status = RiskStatus.where(["id LIKE ?", "%#{@project_risk.risk_status_id}%"]).first
